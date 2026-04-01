@@ -9,6 +9,9 @@ Type=oneshot
 ExecCondition=/usr/libexec/ublue-nvidia-flatpak-runtime-sync check
 ExecStart=/usr/libexec/ublue-nvidia-flatpak-runtime-sync sync
 RemainAfterExit=yes
+Restart=on-failure
+RestartSec=30
+TimeoutStartSec=600
 
 [Install]
 WantedBy=multi-user.target
