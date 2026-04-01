@@ -3,6 +3,8 @@ Description=Sync NVIDIA system drivers with Flatpak runtime
 After=network-online.target flatpak-system-helper.service
 Wants=network-online.target
 ConditionPathExists=/proc/driver/nvidia/version
+# To not run on live ISO
+ConditionPathExists=/run/ostree-booted
 
 [Service]
 Type=oneshot
