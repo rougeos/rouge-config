@@ -89,7 +89,7 @@ flatpak='off'
 [org.gnome.shell.extensions.custom-command-list]
 menuoptions-setting=2
 menuicon-setting='ublue-logo-symbolic'
-menulocation-setting=0
+menulocation-setting=1
 show-arrow=false
 
 [org.gnome.shell.extensions.search-light]
