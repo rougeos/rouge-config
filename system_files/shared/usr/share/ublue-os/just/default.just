@@ -58,18 +58,13 @@ logs-last-boot:
 # Enroll Nvidia driver & KMOD signing keys for secure boot - Enter password "rouge" if prompted
 enroll-secure-boot-key:
     #!/usr/bin/bash
+    set -euo pipefail
+    shopt -s nullglob
     ENROLLMENT_PASSWORD="rouge"
-    KEY_URL_1="https://downloads.rougeos.com/keys/rouge_2026-04-25-1.der"
-    KEY_URL_2="https://downloads.rougeos.com/keys/rouge_2026-04-25-2.der"
-    TMPDIR="$(mktemp -d)"
-    trap 'rm -rf "$TMPDIR"' EXIT
-    curl --retry 15 -fLo "$TMPDIR/key1.der" "$KEY_URL_1"
-    curl --retry 15 -fLo "$TMPDIR/key2.der" "$KEY_URL_2"
-    sudo bash <<EOF
-    mokutil --timeout -1
-    echo -e "$ENROLLMENT_PASSWORD\n$ENROLLMENT_PASSWORD" | mokutil --import "$TMPDIR/key1.der"
-    echo -e "$ENROLLMENT_PASSWORD\n$ENROLLMENT_PASSWORD" | mokutil --import "$TMPDIR/key2.der"
-    EOF
+    sudo mokutil --timeout -1
+    for key in /etc/pki/akmods/certs/rouge_*.der; do
+        echo -e "$ENROLLMENT_PASSWORD\n$ENROLLMENT_PASSWORD" | sudo mokutil --import "$key"
+    done
     echo 'At next reboot, the mokutil UEFI menu UI will be displayed (*QWERTY* keyboard input and navigation).\nThen, select "Enroll MOK", and input "rouge" as the password'
 
 # Toggle display of the user-motd in terminal
